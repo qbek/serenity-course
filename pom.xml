@@ -1,13 +1,27 @@
-# Serenity course
+<?xml version="1.0" encoding="UTF-8"?>
 
-*
-## Development environment setup
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-git repository tag: 01_env_setup
+  <groupId>com.github.qbek</groupId>
+  <artifactId>serenity-course</artifactId>
+  <version>1.0-SNAPSHOT</version>
 
-1. Create standard maven project
-2. Add following dependencies:
-```xml
+  <name>serenity-course</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <serenity.version>2.0.30</serenity.version>
+    <serenity.cucumber.version>1.9.22</serenity.cucumber.version>
+    <javafaker.version>0.16</javafaker.version>
+    <mock-server.version>5.5.1</mock-server.version>
+  </properties>
+
+  <dependencies>
+
     <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-screenplay -->
     <dependency>
       <groupId>net.serenity-bdd</groupId>
@@ -22,7 +36,7 @@ git repository tag: 01_env_setup
       <artifactId>serenity-cucumber</artifactId>
       <version>${serenity.cucumber.version}</version>
     </dependency>
-    
+
     <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
     <dependency>
       <groupId>com.github.javafaker</groupId>
@@ -36,18 +50,18 @@ git repository tag: 01_env_setup
       <artifactId>mockserver-netty</artifactId>
       <version>${mock-server.version}</version>
     </dependency>
-    
-    
-    
-```
-```xml
-    <serenity.version>2.0.30</serenity.version>
-    <serenity.cucumber.version>1.9.22</serenity.cucumber.version>
-    <javafaker.version>0.16</javafaker.version>
-    <mock-server.version>5.5.1</mock-server.version>
-```
-3. Report generation - add following plugin in build section:
-```xml
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
         <plugin>
           <groupId>net.serenity-bdd.maven.plugins</groupId>
           <artifactId>serenity-maven-plugin</artifactId>
@@ -62,6 +76,8 @@ git repository tag: 01_env_setup
             </execution>
           </executions>
         </plugin>
-```
-4.  In command line execute: `mvn verify` - to run sample test scenario from `src/test/resources/features` 
-5.  In command line execute:  `mvn serenity:aggregate` - to generate serenity report `target/site/serenity/index.html`
+
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
