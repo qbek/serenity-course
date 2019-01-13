@@ -1,67 +1,59 @@
 # Serenity course
 
-*
-## Development environment setup
+## Set up Stage and Cast
 
-git repository tag: 01_env_setup
+First of all we need to setup our `Stage` object. It represents an execution environment for scenario.  `Stage` object contains a `Cast` - a manager for all our actors in scenario.
 
-1. Create standard maven project
-2. Add following dependencies:
-```xml
-    <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-screenplay -->
-    <dependency>
-      <groupId>net.serenity-bdd</groupId>
-      <artifactId>serenity-screenplay</artifactId>
-      <version>${serenity.version}</version>
-    </dependency>
+`OnStage` is a thread safe stage manager for scenarios. Using it gives you support for safe parallel test execution. OnStage object will manage separate Stage object for each scenario, so you are sure, that one scenario doesn't overwrite test data form another scenario executed at the same time.
 
+I created a `setup()` function, marked with Cucumber `@Before` hook, so this function executes at beginning of scenario. This is a good place to setup or `Stage` with new, empty `Cast`.
 
-    <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-cucumber -->
-    <dependency>
-      <groupId>net.serenity-bdd</groupId>
-      <artifactId>serenity-cucumber</artifactId>
-      <version>${serenity.cucumber.version}</version>
-    </dependency>
+```java
+public class CardBalanceSteps {
+    @Before
+    public void setup() {
+        OnStage.setTheStage(new Cast());
+    }    
     
-    <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
-    <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
-      <version>${javafaker.version}</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.mock-server/mockserver-netty -->
-    <dependency>
-      <groupId>org.mock-server</groupId>
-      <artifactId>mockserver-netty</artifactId>
-      <version>${mock-server.version}</version>
-    </dependency>
-    
-    
-    
+    //...
+}
 ```
-```xml
-    <serenity.version>2.0.30</serenity.version>
-    <serenity.cucumber.version>1.9.22</serenity.cucumber.version>
-    <javafaker.version>0.16</javafaker.version>
-    <mock-server.version>5.5.1</mock-server.version>
+
+Once we have `Stage` created we can start to call our first actor. I've created a step function for first step of example scenario. User name is injected as a parameter to handling function. I use this name to get our first `Actor` object using function `theActorCalled(name)` from global `OnStage` object - so I'm sure that received `Actor` is a deciated object for this scenario.
+
+Function `theActorCalled(name)` does:
+1. Check if `Actor` with name was already created in `Cast` object and returns him.
+2. If there is no such `Actor` creted before - it creates a new `Actor`, adds it to the `Cast` and returns him.
+3. For both cases it also sets a `spotlight` on that `Actor` (more details in a moment)
+
+```java
+    @Given("^(\\w+) is a card user with active account$")
+    public void carlIsACardUserWithActiveAccount(String name) throws Throwable {
+        // Checks if actor was already created
+        // If not - creates a new one and stores in Cast object
+        Actor user = OnStage.theActorCalled(name);
+    }
 ```
-3. Report generation - add following plugin in build section:
-```xml
-        <plugin>
-          <groupId>net.serenity-bdd.maven.plugins</groupId>
-          <artifactId>serenity-maven-plugin</artifactId>
-          <version>${serenity.version}</version>
-          <executions>
-            <execution>
-              <id>serenity-reports</id>
-              <phase>post-integration-test</phase>
-              <goals>
-                <goal>aggregate</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+
+To retrieve already created `Actor` we have 3 options:
+1. Use `theActorCalled(name)` function
+2. Use `theActorCalled(pronoun)` - same as above, but when you pass 'he', 'she'... it will return an `Actor` marked with `spotlight` - so it is last used, default, one.
+3. Use 'theActorInTheSpotlight()' function to also return `Actor` marked with spotlight`. This function is used in steps, where we cannot pass name or pronoun for `Actor` selection
+
+Let's try way 2 or 3 in next step implementation:
+
+```java
+    @And("^(\\w+) is logged in his account$")
+    public void heIsLoggedInHisAccount(String name) throws Throwable {
+            // Last used actor has set spotlight on him
+            // can be used in steps without actor name    
+            Actor user = OnStage.theActorInTheSpotlight();
+            
+            // same result with using pronun: 'he', 'she'...
+            // Actor user = OnStage.theActorCalled(name);
+            System.out.println("Actor in the spotlight is: " + user.getName());
+        }
 ```
-4.  In command line execute: `mvn verify` - to run sample test scenario from `src/test/resources/features` 
-5.  In command line execute:  `mvn serenity:aggregate` - to generate serenity report `target/site/serenity/index.html`
+
+## Previous chapters:
+1. Development environment setup, git repository tag: [01_env_setup](https://github.com/qbek/serenity-course/tree/01_env_setup)
