@@ -1,8 +1,8 @@
 package com.github.qbek.screenplay;
 
 import com.github.javafaker.Faker;
-import com.github.qbek.screenplay.abilitites.Account;
-import com.github.qbek.screenplay.abilitites.Card;
+import com.github.qbek.screenplay.abilitites.UseAccount;
+import com.github.qbek.screenplay.abilitites.UseCard;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -25,27 +25,34 @@ public class CardBalanceSteps {
         // If not - creates a new one and stores in Cast object
         Actor user = OnStage.theActorCalled(name);
 
-        Card card = new Card(
+        UseCard useCard = new UseCard(
                 faker.numerify("1100 01## #### ####"),
                 faker.business().creditCardExpiry(),
                 faker.number().randomDouble(2, 100, 2123)
         );
 
-        Account account = new Account(
+        UseAccount useAccount = new UseAccount(
                 faker.dragonBall().character(),
                 faker.superhero().power()
         );
-        
+
+        // To add/store ability inside actor (for future use)
+        user.can(useCard);
+        user.can(useAccount);
     }
 
-    @And("^(\\w+) is logged in his account$")
+    @Given("^(\\w+) is logged in his account$")
     public void heIsLoggedInHisAccount(String name) throws Throwable {
         // Last used actor has set spotlight on him
         // can be used in steps without actor name
-        Actor user = OnStage.theActorInTheSpotlight();
+//        Actor user = OnStage.theActorInTheSpotlight();
 
         // same result with using pronun: 'he', 'she'...
-        // Actor user = OnStage.theActorCalled(name)
+        Actor user = OnStage.theActorCalled(name);
         System.out.println("Actor in the spotlight is: " + user.getName());
+
+        // Having a correct user allows you to access stored abilities
+        System.out.println("User login: " + user.usingAbilityTo(UseAccount.class).getLogin());
+        System.out.println("User password: " + user.usingAbilityTo(UseAccount.class).getPassword());
     }
 }

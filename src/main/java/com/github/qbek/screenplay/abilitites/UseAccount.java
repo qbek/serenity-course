@@ -2,7 +2,7 @@ package com.github.qbek.screenplay.abilitites;
 
 import net.serenitybdd.screenplay.Ability;
 
-public class Account implements Ability {
+public class UseAccount implements Ability {
 
     private String login;
 
@@ -16,7 +16,7 @@ public class Account implements Ability {
 
     private String password;
 
-    public Account (String login, String password) {
+    public UseAccount(String login, String password) {
         this.login = login;
         this.password = password;
     }

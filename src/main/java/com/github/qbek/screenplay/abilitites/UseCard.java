@@ -2,12 +2,12 @@ package com.github.qbek.screenplay.abilitites;
 
 import net.serenitybdd.screenplay.Ability;
 
-public class Card implements Ability {
+public class UseCard implements Ability {
     private String pan;
     private String expDate;
     private double balance;
 
-    public Card (String pan, String expDate, double balance) {
+    public UseCard(String pan, String expDate, double balance) {
         this.pan = pan;
         this.expDate = expDate;
         this.balance = balance;
