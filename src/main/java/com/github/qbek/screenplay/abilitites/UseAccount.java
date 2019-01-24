@@ -20,4 +20,8 @@ public class UseAccount implements Ability {
         this.login = login;
         this.password = password;
     }
+
+    public String toString() {
+        return "can log in with credentials: " + login + " / " + password;
+    }
 }
