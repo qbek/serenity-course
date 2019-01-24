@@ -1,4 +1,4 @@
-package com.github.qbek.screenplay;
+package com.github.qbek.screenplay.steps;
 
 import com.github.qbek.screenplay.abilitites.UseCard;
 import cucumber.api.PendingException;
