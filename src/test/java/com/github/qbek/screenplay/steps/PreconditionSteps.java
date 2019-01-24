@@ -1,6 +1,7 @@
-package com.github.qbek.screenplay;
+package com.github.qbek.screenplay.steps;
 
 import com.github.javafaker.Faker;
+import com.github.qbek.screenplay.abilitites.CardFactory;
 import com.github.qbek.screenplay.abilitites.UseAccount;
 import com.github.qbek.screenplay.abilitites.UseCard;
 import cucumber.api.java.Before;
@@ -10,7 +11,9 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
-public class CardBalanceSteps {
+import static com.github.qbek.screenplay.abilitites.CardFactory.useValidCard;
+
+public class PreconditionSteps {
 
     Faker faker = new Faker();
 
@@ -25,19 +28,13 @@ public class CardBalanceSteps {
         // If not - creates a new one and stores in Cast object
         Actor user = OnStage.theActorCalled(name);
 
-        UseCard useCard = new UseCard(
-                faker.numerify("1100 01## #### ####"),
-                faker.business().creditCardExpiry(),
-                faker.number().randomDouble(2, 100, 2123)
-        );
-
         UseAccount useAccount = new UseAccount(
                 faker.dragonBall().character(),
                 faker.superhero().power()
         );
 
-        // To add/store ability inside actor (for future use)
-        user.can(useCard);
+        // Now we are creating our card ability using static CardFactory function.
+        user.can(useValidCard());
         user.can(useAccount);
     }
 
