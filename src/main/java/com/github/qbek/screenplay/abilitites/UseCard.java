@@ -28,4 +28,8 @@ public class UseCard implements Ability {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public String toString() {
+        return "use following card: " + pan + ", with balance: " + balance;
+    }
 }
