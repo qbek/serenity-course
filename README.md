@@ -61,6 +61,35 @@ Now precondition step looks better:
 
 Next step is yours! Write your own AccountFactory, and clean more our precondition step.
 
+### Solution
+
+I've created `AccountFactory` class next to `CardFactory` class, with following content:
+
+```java
+public class AccountFactory {
+
+    private static Faker faker = new Faker();
+
+    //for now both functions looks quite similar....
+    public static UseAccount useActiveAccount() {
+        return generateAccount();
+    }
+
+    //...well, they are the same to be honest
+    //but it will change in a moment ;)
+    public static UseAccount useInactiveAccount() {
+        return generateAccount();
+    }
+
+    private static UseAccount generateAccount() {
+        return new UseAccount(
+                faker.dragonBall().character(),
+                faker.superhero().power()
+        );
+    }
+}
+```
+
 
 ## Previous chapters:
 1. Development environment setup, git repository tag: `01_env_setup`

@@ -11,6 +11,7 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
+import static com.github.qbek.screenplay.abilitites.AccountFactory.useActiveAccount;
 import static com.github.qbek.screenplay.abilitites.CardFactory.useValidCard;
 
 public class PreconditionSteps {
@@ -28,15 +29,11 @@ public class PreconditionSteps {
         // If not - creates a new one and stores in Cast object
         Actor user = OnStage.theActorCalled(name);
 
-        UseAccount useAccount = new UseAccount(
-                faker.dragonBall().character(),
-                faker.superhero().power()
-        );
-
         // Now we are creating our card ability using static CardFactory function.
         user.can(useValidCard());
-        user.can(useAccount);
+        user.can(useActiveAccount());
     }
+
 
     @Given("^(\\w+) is logged in his account$")
     public void heIsLoggedInHisAccount(String name) throws Throwable {
