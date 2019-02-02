@@ -18,7 +18,7 @@ public class AccountFactory {
         boolean active = true;
         setAccountInSystem(account, active);
         return account;
-    };
+    }
 
     //...well, they are the same to be honest
     //but it will change in a moment ;)
