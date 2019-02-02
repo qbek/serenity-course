@@ -4,15 +4,18 @@ import com.github.javafaker.Faker;
 import com.github.qbek.screenplay.abilitites.CardFactory;
 import com.github.qbek.screenplay.abilitites.UseAccount;
 import com.github.qbek.screenplay.abilitites.UseCard;
+import com.github.qbek.screenplay.facts.CardAccountFact;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.facts.Fact;
 
 import static com.github.qbek.screenplay.abilitites.AccountFactory.useActiveAccount;
 import static com.github.qbek.screenplay.abilitites.CardFactory.useValidCard;
+import static com.github.qbek.screenplay.facts.CardAccountFact.accountWithCard;
 
 public class PreconditionSteps {
 
@@ -29,9 +32,9 @@ public class PreconditionSteps {
         // If not - creates a new one and stores in Cast object
         Actor user = OnStage.theActorCalled(name);
 
-        // Now we are creating our card ability using static CardFactory function.
-        user.can(useValidCard());
-        user.can(useActiveAccount());
+        //now we can add two abilities (or even more)
+        //using just one line...
+        user.has(accountWithCard());
     }
 
 
@@ -44,7 +47,6 @@ public class PreconditionSteps {
         // same result with using pronun: 'he', 'she'...
         Actor user = OnStage.theActorCalled(name);
         System.out.println("Actor in the spotlight is: " + user.getName());
-
         // Having a correct user allows you to access stored abilities
         System.out.println("User login: " + user.usingAbilityTo(UseAccount.class).getLogin());
         System.out.println("User password: " + user.usingAbilityTo(UseAccount.class).getPassword());
