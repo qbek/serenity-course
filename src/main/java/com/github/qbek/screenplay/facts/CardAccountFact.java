@@ -11,6 +11,7 @@ import net.serenitybdd.screenplay.facts.Fact;
 import org.hamcrest.Matchers;
 
 import static com.github.qbek.screenplay.abilitites.AccountFactory.useActiveAccount;
+import static com.github.qbek.screenplay.abilitites.AccountFactory.useInactiveAccount;
 import static com.github.qbek.screenplay.abilitites.CardFactory.useValidCard;
 
 public class CardAccountFact {
@@ -29,6 +30,19 @@ public class CardAccountFact {
 
             public String toString() {
                 return "active account and valid card";
+            }
+        };
+    }
+
+    public static Fact inactiveAccount() {
+        return new Fact() {
+            @Override
+            public void setup(Actor actor) {
+                try {
+                    actor.can(useInactiveAccount());
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
             }
         };
     }
