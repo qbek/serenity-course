@@ -1,7 +1,9 @@
 package com.github.qbek.screenplay;
 
 import com.github.javafaker.Faker;
+import com.github.qbek.screenplay.abilities.UseAccount;
 import com.github.qbek.screenplay.abilities.UseCard;
+import com.github.qbek.screenplay.testdata.Account;
 import com.github.qbek.screenplay.testdata.Card;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -32,6 +34,13 @@ public class CardBalanceSteps {
         );
 
         UseCard useCard = new UseCard(card);
+
+        Account account = new Account(
+                faker.dragonBall().character(),
+                faker.superhero().power()
+        );
+
+        UseAccount useAccount = new UseAccount(account);
     }
 
     @And("^(\\w+) is logged in his account$")
