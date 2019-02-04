@@ -1,59 +1,67 @@
 # Serenity course
 
-## Set up Stage and Cast
+# Create first ability
 
-First of all we need to setup our `Stage` object. It represents an execution environment for scenario.  `Stage` object contains a `Cast` - a manager for all our actors in scenario.
+`Ability` object is a screenplay way to manage test data. Let's create our first such object called `Card` - it will store a plastic card details needed for our scenario.
 
-`OnStage` is a thread safe stage manager for scenarios. Using it gives you support for safe parallel test execution. OnStage object will manage separate Stage object for each scenario, so you are sure, that one scenario doesn't overwrite test data form another scenario executed at the same time.
-
-I created a `setup()` function, marked with Cucumber `@Before` hook, so this function executes at beginning of scenario. This is a good place to setup or `Stage` with new, empty `Cast`.
+I've created a new class in `src/` directory, in package `com.github.qbek.screenplay.abilitites` with content:
 
 ```java
-public class CardBalanceSteps {
-    @Before
-    public void setup() {
-        OnStage.setTheStage(new Cast());
-    }    
-    
-    //...
+public class Card implements Ability {
+    private String pan;
+    private String expDate;
+    private double balance;
+
+    public Card (String pan, String expDate, double balance) {
+        this.pan = pan;
+        this.expDate = expDate;
+        this.balance = balance;
+    }
+
+    public String getPan() {
+        return pan;
+    }
+
+    public String getExpDate() {
+        return expDate;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }
 ```
 
-Once we have `Stage` created we can start to call our first actor. I've created a step function for first step of example scenario. User name is injected as a parameter to handling function. I use this name to get our first `Actor` object using function `theActorCalled(name)` from global `OnStage` object - so I'm sure that received `Actor` is a deciated object for this scenario.
+As you can see, `Card` class stores pan, expiration date and balance, and only for balance we have setter. Pan and expiration date can be set only via `Card` constructor. Why? Because actor in our system cannot change PAN of his card. As a standard card user he can change only a balance of it. So, our class represents it - it will secure data, which cannot be changed, to prevent some silly mistakes in scenario.
 
-Function `theActorCalled(name)` does:
-1. Check if `Actor` with name was already created in `Cast` object and returns him.
-2. If there is no such `Actor` creted before - it creates a new `Actor`, adds it to the `Cast` and returns him.
-3. For both cases it also sets a `spotlight` on that `Actor` (more details in a moment)
+Now in step, where a card is mentioned for the first time, I created a new card (using faker library to generate some funny random data).
 
 ```java
+    Faker faker = new Faker();
+
     @Given("^(\\w+) is a card user with active account$")
     public void carlIsACardUserWithActiveAccount(String name) throws Throwable {
         // Checks if actor was already created
         // If not - creates a new one and stores in Cast object
         Actor user = OnStage.theActorCalled(name);
+        
+        Card card = new Card(
+                faker.numerify("1100 01## #### ####"),
+                faker.business().creditCardExpiry(),
+                faker.number().randomDouble(2, 100, 2123)
+        );
     }
 ```
 
-To retrieve already created `Actor` we have 3 options:
-1. Use `theActorCalled(name)` function
-2. Use `theActorCalled(pronoun)` - same as above, but when you pass 'he', 'she'... it will return an `Actor` marked with `spotlight` - so it is last used, default, one.
-3. Use 'theActorInTheSpotlight()' function to also return `Actor` marked with spotlight`. This function is used in steps, where we cannot pass name or pronoun for `Actor` selection
+## Exercise
 
-Let's try way 2 or 3 in next step implementation:
+Create `Account` class with credential details (username, password). Do not forget to create also `Account` object in correct step. 
 
-```java
-    @And("^(\\w+) is logged in his account$")
-    public void heIsLoggedInHisAccount(String name) throws Throwable {
-            // Last used actor has set spotlight on him
-            // can be used in steps without actor name    
-            Actor user = OnStage.theActorInTheSpotlight();
-            
-            // same result with using pronun: 'he', 'she'...
-            // Actor user = OnStage.theActorCalled(name);
-            System.out.println("Actor in the spotlight is: " + user.getName());
-        }
-```
 
 ## Previous chapters:
 1. Development environment setup, git repository tag: [01_env_setup](https://github.com/qbek/serenity-course/tree/01_env_setup)
+2. Set up Stage and Cast, git repository tag: [02_stage_and_cast](https://github.com/qbek/serenity-course/tree/02_stage_and_cast)
