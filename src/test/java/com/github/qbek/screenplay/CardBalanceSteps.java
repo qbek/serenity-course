@@ -1,6 +1,8 @@
 package com.github.qbek.screenplay;
 
-import cucumber.api.PendingException;
+import com.github.javafaker.Faker;
+import com.github.qbek.screenplay.abilitites.Account;
+import com.github.qbek.screenplay.abilitites.Card;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -9,6 +11,8 @@ import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
 public class CardBalanceSteps {
+
+    Faker faker = new Faker();
 
     @Before
     public void setup() {
@@ -20,6 +24,12 @@ public class CardBalanceSteps {
         // Checks if actor was already created
         // If not - creates a new one and stores in Cast object
         Actor user = OnStage.theActorCalled(name);
+
+        Card card = new Card(
+                faker.numerify("1100 01## #### ####"),
+                faker.business().creditCardExpiry(),
+                faker.number().randomDouble(2, 100, 2123)
+        );
     }
 
     @And("^(\\w+) is logged in his account$")
