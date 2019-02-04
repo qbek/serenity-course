@@ -30,6 +30,12 @@ public class CardBalanceSteps {
                 faker.business().creditCardExpiry(),
                 faker.number().randomDouble(2, 100, 2123)
         );
+
+        Account account = new Account(
+                faker.dragonBall().character(),
+                faker.superhero().power()
+        );
+        
     }
 
     @And("^(\\w+) is logged in his account$")
