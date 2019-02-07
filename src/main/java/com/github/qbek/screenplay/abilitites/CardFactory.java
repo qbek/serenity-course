@@ -20,7 +20,6 @@ public class CardFactory {
                 "20/12",
                 faker.number().randomDouble(2, 100, 2123)
         );
-        createCardInSystem(card);
         return card;
     }
 
@@ -38,10 +37,5 @@ public class CardFactory {
         return faker.numerify("110001##########");
     }
 
-    private static void createCardInSystem(UseCard card) throws JsonProcessingException {
 
-        ObjectMapper mapper = new ObjectMapper();
-        mockClient.when(HttpRequest.request("/card/" + card.getPan()))
-                .respond(HttpResponse.response(mapper.writeValueAsString(card)).withStatusCode(200));
-    }
 }
