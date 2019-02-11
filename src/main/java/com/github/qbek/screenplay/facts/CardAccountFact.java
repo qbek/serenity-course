@@ -84,6 +84,6 @@ public class CardAccountFact {
 
         ObjectMapper mapper = new ObjectMapper();
         mockClient.when(HttpRequest.request("/card/" + card.getPan()))
-                .respond(HttpResponse.response(mapper.writeValueAsString(card)).withStatusCode(200));
+                .respond(HttpResponse.response().withBody(mapper.writeValueAsString(card)).withStatusCode(200).withHeader("Content-Type", "application/json"));
     }
 }

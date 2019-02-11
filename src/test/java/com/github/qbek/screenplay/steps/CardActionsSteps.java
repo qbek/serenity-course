@@ -7,15 +7,15 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.rest.interactions.Get;
+import net.serenitybdd.screenplay.rest.interactions.Post;
 
 public class CardActionsSteps {
     @When("^(\\w+) checks his card balance$")
     public void carlChecksHisCardBalance(String userName) throws Throwable {
         // OnStage is a global object. You can access it form anywhere ;)
         Actor user = OnStage.theActorCalled(userName);
-
-        System.out.println("User card: " + user.usingAbilityTo(UseCard.class).getPan() + ",\n"
-                            + "balance: " + user.usingAbilityTo(UseCard.class).getBalance());
+        UseCard card = user.usingAbilityTo(UseCard.class);
+        user.wasAbleTo(Get.resource("/card/" + card.getPan()));
     }
-
 }
