@@ -29,6 +29,12 @@
       <version>${serenity.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-screenplay-rest</artifactId>
+      <version>${serenity.version}</version>
+    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-cucumber -->
     <dependency>
