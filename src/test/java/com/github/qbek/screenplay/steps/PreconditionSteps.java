@@ -1,7 +1,5 @@
 package com.github.qbek.screenplay.steps;
 
-import com.github.qbek.screenplay.actions.Account;
-import com.github.qbek.screenplay.actions.LoginToAccount;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import net.serenitybdd.screenplay.Actor;
@@ -24,7 +22,7 @@ public class PreconditionSteps {
         user.has(accountWithCard());
         user.can(CallAnApi.at("http://localhost:8080"));
     }
-
+    
 
 
     @Given("^(\\w+) is logged in his account$")
