@@ -4,6 +4,7 @@ import net.serenitybdd.core.steps.Instrumented;
 import net.serenitybdd.screenplay.*;
 import org.hamcrest.Matchers;
 
+import static net.serenitybdd.screenplay.GivenWhenThen.returnsAValueThat;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 
 public class Account {
@@ -18,6 +19,7 @@ public class Account {
     }
 
     public static Task checkCardBalance() {
-        return new CheckCardBalance();
+        CheckCardBalance task = new CheckCardBalance("credit");
+        return Task.where("{0} checks credit card balance", task);
     }
 }
