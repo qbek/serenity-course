@@ -10,4 +10,8 @@ public class Account {
     public static Task loginToAccount() {
         return new LoginToAccount();
     }
+
+    public static Task checkCardBalance() {
+        return new CheckCardBalance();
+    }
 }
