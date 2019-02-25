@@ -4,26 +4,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.qbek.screenplay.abilitites.UseAccount;
 import com.github.qbek.screenplay.abilitites.UseCard;
-import net.serenitybdd.core.Serenity;
-import net.serenitybdd.core.exceptions.SerenityManagedException;
-import net.serenitybdd.reports.model.FailingScenario;
-import net.serenitybdd.screenplay.Ability;
+import com.github.qbek.screenplay.actions.data.AuthorizationType;
+import com.github.qbek.screenplay.actions.data.CardType;
 import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.Question;
-import net.serenitybdd.screenplay.QuestionConsequence;
 import net.serenitybdd.screenplay.facts.Fact;
-import org.hamcrest.Matchers;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 
 import static com.github.qbek.screenplay.abilitites.AccountFactory.useActiveAccount;
-import static com.github.qbek.screenplay.abilitites.AccountFactory.useInactiveAccount;
 import static com.github.qbek.screenplay.abilitites.CardFactory.useValidCard;
+import static com.github.qbek.screenplay.actions.data.AuthorizationType.CREDENTIALS;
+import static com.github.qbek.screenplay.actions.data.CardType.CREDIT;
 
 public class CardAccountFact {
 
-    public static Fact accountWithCard() {
+    public static Fact accountWithCreditCard() {
         return new Fact() {
             @Override
             public void setup(Actor actor) {
@@ -31,12 +27,12 @@ public class CardAccountFact {
                 try {
                     UseCard useValidCard = useValidCard();
                     actor.can(useValidCard);
-                    createCardInSystem(useValidCard);
+                    createCardInSystem(useValidCard, CREDIT);
 
                     UseAccount useActiveAccount = useActiveAccount();
                     actor.can(useActiveAccount);
                     boolean active = true;
-                    setAccountInSystem(useActiveAccount, active);
+                    setAccountInSystem(useActiveAccount, active, CREDENTIALS);
 
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
@@ -57,7 +53,7 @@ public class CardAccountFact {
                     UseAccount useInactiveAccount = useActiveAccount();
                     actor.can(useInactiveAccount);
                     boolean inactive = false;
-                    setAccountInSystem(useInactiveAccount, inactive);
+                    setAccountInSystem(useInactiveAccount, inactive, CREDENTIALS);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -67,7 +63,7 @@ public class CardAccountFact {
 
     private static MockServerClient mockClient = new MockServerClient("localhost", 8080);
 
-    private static void setAccountInSystem(UseAccount account, boolean isActive) throws JsonProcessingException {
+    private static void setAccountInSystem(UseAccount account, boolean isActive, AuthorizationType authType) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         int responseCode;
         if (isActive) {
@@ -76,14 +72,27 @@ public class CardAccountFact {
             responseCode = 404;
         }
 
-        mockClient.when(HttpRequest.request("/login").withBody(mapper.writeValueAsString(account)))
+        String body = "";
+
+        switch (authType) {
+            case CREDENTIALS:
+                body = mapper.writeValueAsString(account);
+                break;
+
+            case AUTH_TOKEN:
+                body = account.getPassword();
+                break;
+        }
+
+        mockClient.when(HttpRequest.request("/login").withBody(body))
                 .respond(HttpResponse.response().withStatusCode(responseCode));
     }
 
-    private static void createCardInSystem(UseCard card) throws JsonProcessingException {
+    private static void createCardInSystem(UseCard card, CardType cardType) throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        mockClient.when(HttpRequest.request("/card/" + card.getPan()))
+        String path = String.format("/%s/", cardType.toString().toLowerCase());
+        mockClient.when(HttpRequest.request(path + card.getPan()))
                 .respond(HttpResponse.response().withBody(mapper.writeValueAsString(card)).withStatusCode(200).withHeader("Content-Type", "application/json"));
     }
 }

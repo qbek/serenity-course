@@ -2,18 +2,18 @@ package com.github.qbek.screenplay.actions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.qbek.screenplay.abilitites.UseAccount;
+import com.github.qbek.screenplay.actions.data.AuthorizationType;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.rest.interactions.Post;
-import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.StepEventBus;
 
 public class LoginToAccount implements Task {
 
 
-    private String authType;
+    private AuthorizationType authType;
 
-    LoginToAccount(String authType) {
+    LoginToAccount(AuthorizationType authType) {
         this.authType = authType;
     }
 
@@ -22,11 +22,11 @@ public class LoginToAccount implements Task {
     // @Step("{0} login to account using #authType authorization")
     public <T extends Actor> void performAs(T actor) {
        switch (authType) {
-           case "credentials":
+           case CREDENTIALS:
                actor.attemptsTo(performCredentialsAuthorization());
                break;
 
-           case "authToken":
+           case AUTH_TOKEN:
                actor.attemptsTo(performAuthTokenAuthorization());
                break;
 

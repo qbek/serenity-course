@@ -1,6 +1,7 @@
 package com.github.qbek.screenplay.actions;
 
 import com.github.qbek.screenplay.abilitites.UseCard;
+import com.github.qbek.screenplay.actions.data.CardType;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
@@ -10,25 +11,25 @@ import net.thucydides.core.steps.StepEventBus;
 public class CheckCardBalance implements Task {
 
 
-    private final String cardType;
+    private final CardType type;
 
-    CheckCardBalance(String cardType) {
-        this.cardType = cardType;
+    CheckCardBalance(CardType type) {
+        this.type = type;
     }
 
     @Override
     public <T extends Actor> void performAs(T user) {
-        switch (cardType) {
-            case "credit":
+        switch (type) {
+            case CREDIT:
                 user.attemptsTo(performCreditCardCheck());
                 break;
 
-            case "debit":
+            case DEBIT:
                 user.attemptsTo(performDebitCardCheck());
                 break;
 
             default:
-                StepEventBus.getEventBus().testFailed(new Exception("Not supported card type: " + cardType));
+                StepEventBus.getEventBus().testFailed(new Exception("Not supported card type: " + type));
         }
     }
 
