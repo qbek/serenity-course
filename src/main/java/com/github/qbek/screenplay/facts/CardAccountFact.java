@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.qbek.screenplay.abilitites.UseAccount;
 import com.github.qbek.screenplay.abilitites.UseCard;
 import com.github.qbek.screenplay.actions.data.AuthorizationType;
-import com.github.qbek.screenplay.actions.data.CardType;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.facts.Fact;
 import org.mockserver.client.MockServerClient;
@@ -13,9 +12,8 @@ import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 
 import static com.github.qbek.screenplay.abilitites.AccountFactory.useActiveAccount;
-import static com.github.qbek.screenplay.abilitites.CardFactory.useValidCard;
+import static com.github.qbek.screenplay.abilitites.CardFactory.useRandomCard;
 import static com.github.qbek.screenplay.actions.data.AuthorizationType.CREDENTIALS;
-import static com.github.qbek.screenplay.actions.data.CardType.CREDIT;
 
 public class CardAccountFact {
 
@@ -25,9 +23,9 @@ public class CardAccountFact {
             public void setup(Actor actor) {
                 // Now we are creating our card ability using static CardFactory function.
                 try {
-                    UseCard useValidCard = useValidCard();
+                    UseCard useValidCard = useRandomCard();
                     actor.can(useValidCard);
-                    createCardInSystem(useValidCard, CREDIT);
+                    createCardInSystem(useValidCard);
 
                     UseAccount useActiveAccount = useActiveAccount();
                     actor.can(useActiveAccount);
@@ -88,10 +86,10 @@ public class CardAccountFact {
                 .respond(HttpResponse.response().withStatusCode(responseCode));
     }
 
-    private static void createCardInSystem(UseCard card, CardType cardType) throws JsonProcessingException {
+    private static void createCardInSystem(UseCard card) throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        String path = String.format("/%s/", cardType.toString().toLowerCase());
+        String path = String.format("/%s/", card.getType().toString().toLowerCase());
         mockClient.when(HttpRequest.request(path + card.getPan()))
                 .respond(HttpResponse.response().withBody(mapper.writeValueAsString(card)).withStatusCode(200).withHeader("Content-Type", "application/json"));
     }

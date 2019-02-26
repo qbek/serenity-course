@@ -13,7 +13,7 @@ public class CardFactoryTest {
 
     @Test
     public void can_generate_valid_card() throws JsonProcessingException {
-        UseCard card = CardFactory.useValidCard();
+        UseCard card = CardFactory.useCreditCard();
         String[] strDate = card.getExpDate().split("/");
         assertThat("Year is > 2019", Integer.valueOf(strDate[0]), greaterThan(19));
         assertThat("Month number between 1 - 12", Integer.valueOf(strDate[1]), greaterThan(0));
