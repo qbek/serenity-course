@@ -11,16 +11,11 @@ import net.thucydides.core.steps.StepEventBus;
 public class LoginToAccount implements Task {
 
 
-    private AuthorizationType authType;
-
-    LoginToAccount(AuthorizationType authType) {
-        this.authType = authType;
-    }
-
     @Override
     // needed when object created by Instrumented.instacneOf()
     // @Step("{0} login to account using #authType authorization")
     public <T extends Actor> void performAs(T actor) {
+       AuthorizationType authType = actor.usingAbilityTo(UseAccount.class).getAuthorizationType();
        switch (authType) {
            case CREDENTIALS:
                actor.attemptsTo(performCredentialsAuthorization());

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.qbek.screenplay.abilitites.UseAccount;
 import com.github.qbek.screenplay.abilitites.UseCard;
-import com.github.qbek.screenplay.actions.data.AuthorizationType;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.facts.Fact;
 import org.mockserver.client.MockServerClient;
@@ -13,7 +12,6 @@ import org.mockserver.model.HttpResponse;
 
 import static com.github.qbek.screenplay.abilitites.AccountFactory.useActiveAccount;
 import static com.github.qbek.screenplay.abilitites.CardFactory.useRandomCard;
-import static com.github.qbek.screenplay.actions.data.AuthorizationType.CREDENTIALS;
 
 public class CardAccountFact {
 
@@ -30,7 +28,7 @@ public class CardAccountFact {
                     UseAccount useActiveAccount = useActiveAccount();
                     actor.can(useActiveAccount);
                     boolean active = true;
-                    setAccountInSystem(useActiveAccount, active, CREDENTIALS);
+                    setAccountInSystem(useActiveAccount, active);
 
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
@@ -51,7 +49,7 @@ public class CardAccountFact {
                     UseAccount useInactiveAccount = useActiveAccount();
                     actor.can(useInactiveAccount);
                     boolean inactive = false;
-                    setAccountInSystem(useInactiveAccount, inactive, CREDENTIALS);
+                    setAccountInSystem(useInactiveAccount, inactive);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -61,7 +59,7 @@ public class CardAccountFact {
 
     private static MockServerClient mockClient = new MockServerClient("localhost", 8080);
 
-    private static void setAccountInSystem(UseAccount account, boolean isActive, AuthorizationType authType) throws JsonProcessingException {
+    private static void setAccountInSystem(UseAccount account, boolean isActive) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         int responseCode;
         if (isActive) {
@@ -72,7 +70,7 @@ public class CardAccountFact {
 
         String body = "";
 
-        switch (authType) {
+        switch (account.getAuthorizationType()) {
             case CREDENTIALS:
                 body = mapper.writeValueAsString(account);
                 break;
