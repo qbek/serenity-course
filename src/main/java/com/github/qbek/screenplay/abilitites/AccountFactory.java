@@ -1,11 +1,11 @@
 package com.github.qbek.screenplay.abilitites;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
-import org.mockserver.client.MockServerClient;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
+import com.github.qbek.screenplay.actions.data.AuthorizationType;
+
+import static com.github.qbek.screenplay.actions.data.AuthorizationType.AUTH_TOKEN;
+import static com.github.qbek.screenplay.actions.data.AuthorizationType.CREDENTIALS;
 
 public class AccountFactory {
 
@@ -25,8 +25,17 @@ public class AccountFactory {
     private static UseAccount generateAccount() {
         return new UseAccount(
                 faker.dragonBall().character(),
-                faker.superhero().power()
+                faker.superhero().power(),
+                getRandomAuthType()
         );
+    }
+
+    private static AuthorizationType getRandomAuthType() {
+        if (faker.random().nextBoolean()) {
+            return CREDENTIALS;
+        } else {
+            return AUTH_TOKEN;
+        }
     }
 
 
