@@ -9,6 +9,9 @@ public class UseCard implements Ability {
     private double balance;
     private CardType type;
 
+
+    public UseCard() {}
+
     public UseCard(String pan, String expDate, double balance, CardType type) {
         this.pan = pan;
         this.expDate = expDate;

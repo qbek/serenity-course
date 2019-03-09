@@ -15,6 +15,36 @@ import static com.github.qbek.screenplay.abilitites.CardFactory.useRandomCard;
 
 public class CardAccountFact {
 
+
+    public static Fact accountWithCredentialsAndCard() {
+        return new Fact() {
+            @Override
+            public void setup(Actor actor) {
+                // Now we are creating our card ability using static CardFactory function.
+                try {
+                    UseCard useCard = useRandomCard();
+                    actor.can(useCard);
+                    createCardInSystem(useCard);
+
+                    UseAccount useActiveAccount = useActiveAccount();
+                    actor.can(useActiveAccount);
+                    boolean active = true;
+                    setAccountInSystem(useActiveAccount, active);
+
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public String toString() {
+                return "active account and valid card";
+            }
+        };
+
+
+
+    }
+
     public static Fact accountWithCreditCard() {
         return new Fact() {
             @Override
