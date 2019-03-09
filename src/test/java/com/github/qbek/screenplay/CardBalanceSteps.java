@@ -23,8 +23,6 @@ public class CardBalanceSteps {
 
     @Given("^(\\w+) is a card user with active account$")
     public void carlIsACardUserWithActiveAccount(String name) throws Throwable {
-        // Checks if actor was already created
-        // If not - creates a new one and stores in Cast object
         Actor user = OnStage.theActorCalled(name);
 
         Card card = new Card(
@@ -41,16 +39,22 @@ public class CardBalanceSteps {
         );
 
         UseAccount useAccount = new UseAccount(account);
+
+        user.can(useCard);
+        user.can(useAccount);
     }
 
     @And("^(\\w+) is logged in his account$")
     public void heIsLoggedInHisAccount(String name) throws Throwable {
-        // Last used actor has set spotlight on him
-        // can be used in steps without actor name
-        Actor user = OnStage.theActorInTheSpotlight();
+        Actor user = OnStage.theActorCalled(name);
 
-        // same result with using pronun: 'he', 'she'...
-        // Actor user = OnStage.theActorCalled(name)
-        System.out.println("Actor in the spotlight is: " + user.getName());
+        Card card = user.usingAbilityTo(UseCard.class).getCard();
+        System.out.println(String.format("%s has card: %s, %s PLN",
+                user.getName(), card.getPan(), card.getBalance()));
+
+        Account account = user.usingAbilityTo(UseAccount.class).getAccount();
+        System.out.println(String.format("%s has account: %s / %s",
+                user.getName(), account.getLogin(), account.getPassword()));
+
     }
 }
