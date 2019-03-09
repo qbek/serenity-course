@@ -12,6 +12,8 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
+import static com.github.qbek.screenplay.abilities.Uses.useCard;
+
 public class CardBalanceSteps {
 
     Faker faker = new Faker();
@@ -23,15 +25,7 @@ public class CardBalanceSteps {
 
     @Given("^(\\w+) is a card user with active account$")
     public void carlIsACardUserWithActiveAccount(String name) throws Throwable {
-        Actor user = OnStage.theActorCalled(name);
-
-        Card card = new Card(
-                faker.numerify("1100 01## #### ####"),
-                faker.business().creditCardExpiry(),
-                faker.number().randomDouble(2, 100, 2123)
-        );
-
-        UseCard useCard = new UseCard(card);
+        Actor user = OnStage.theActorCalled(name).describedAs("is a card user with active account");
 
         Account account = new Account(
                 faker.dragonBall().character(),
@@ -40,7 +34,7 @@ public class CardBalanceSteps {
 
         UseAccount useAccount = new UseAccount(account);
 
-        user.can(useCard);
+        user.can(useCard());
         user.can(useAccount);
     }
 
