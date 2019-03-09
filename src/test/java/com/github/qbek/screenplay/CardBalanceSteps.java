@@ -23,7 +23,7 @@ public class CardBalanceSteps {
 
     @Given("^(\\w+) is a card user with active account$")
     public void carlIsACardUserWithActiveAccount(String name) throws Throwable {
-        Actor user = OnStage.theActorCalled(name);
+        Actor user = OnStage.theActorCalled(name).describedAs("is a card user with active account");
 
         Card card = new Card(
                 faker.numerify("1100 01## #### ####"),

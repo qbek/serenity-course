@@ -14,4 +14,9 @@ public class UseCard implements Ability {
     public Card getCard() {
         return card;
     }
+
+    @Override
+    public String toString() {
+        return String.format("use following card: %s, with balance: %s PLN", card.getPan(), card.getBalance());
+    }
 }

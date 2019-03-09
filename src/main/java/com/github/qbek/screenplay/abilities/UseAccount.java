@@ -14,4 +14,9 @@ public class UseAccount implements Ability {
     public Account getAccount() {
         return account;
     }
+
+    @Override
+    public String toString() {
+        return String.format("use following account: %s / %s", account.getLogin(), account.getPassword());
+    }
 }
