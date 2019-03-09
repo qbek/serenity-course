@@ -12,6 +12,7 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
+import static com.github.qbek.screenplay.abilities.Uses.useAccount;
 import static com.github.qbek.screenplay.abilities.Uses.useCard;
 
 public class CardBalanceSteps {
@@ -26,16 +27,8 @@ public class CardBalanceSteps {
     @Given("^(\\w+) is a card user with active account$")
     public void carlIsACardUserWithActiveAccount(String name) throws Throwable {
         Actor user = OnStage.theActorCalled(name).describedAs("is a card user with active account");
-
-        Account account = new Account(
-                faker.dragonBall().character(),
-                faker.superhero().power()
-        );
-
-        UseAccount useAccount = new UseAccount(account);
-
         user.can(useCard());
-        user.can(useAccount);
+        user.can(useAccount());
     }
 
     @And("^(\\w+) is logged in his account$")
