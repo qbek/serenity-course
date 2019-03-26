@@ -10,6 +10,5 @@ public class UatSystemSetup implements SystemSetup {
 
     @Override
     public void setupCard(Card card) throws JsonProcessingException {
-
     }
 }

@@ -6,5 +6,5 @@ import com.github.qbek.screenplay.abilities.Credentials;
 
 public interface SystemSetup {
     void setupCredentials(Credentials credentials) throws JsonProcessingException;
-    void setupCard(Card card) throws JsonProcessingException;;
+    void setupCard(Card card) throws JsonProcessingException;
 }

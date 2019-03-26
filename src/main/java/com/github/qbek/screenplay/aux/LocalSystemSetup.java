@@ -27,14 +27,17 @@ public class LocalSystemSetup implements SystemSetup {
 
     @Override
     public void setupCard(Card card) throws JsonProcessingException {
-        String path = "/card/" + card.getPan();
+        String path = "/" + card.getType().toString().toLowerCase() + "/" + card.getPan();
         String responseBody = mapper.writeValueAsString(card);
         System.out.println("CARD JSON: " + responseBody);
 
         client.when(
                 HttpRequest.request().withMethod("GET").withPath(path)
         ).respond(
-                HttpResponse.response().withStatusCode(200).withBody(responseBody)
+                HttpResponse.response()
+                        .withStatusCode(200)
+                        .withBody(responseBody)
+                        .withHeader("Content-Type", "application/json")
         );
     }
 }

@@ -1,10 +1,12 @@
 package com.github.qbek.screenplay.facts;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.qbek.screenplay.abilities.*;
+import com.github.qbek.screenplay.abilities.RandomTestDataGenerator;
+import com.github.qbek.screenplay.abilities.TestDataGenerator;
+import com.github.qbek.screenplay.abilities.UseAccount;
+import com.github.qbek.screenplay.abilities.UseCards;
 import com.github.qbek.screenplay.aux.LocalSystemSetup;
 import com.github.qbek.screenplay.aux.SystemSetup;
-import com.github.qbek.screenplay.aux.UatSystemSetup;
 import net.serenitybdd.screenplay.Ability;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.facts.Fact;
@@ -34,25 +36,26 @@ public class AccountWithCard implements Fact {
 
     private TestDataGenerator getTestDataGenerator() throws Exception {
         System.out.println("Testy odpalimy na: " + System.getProperty("env"));
-        switch (System.getProperty("env")) {
-            case "local":
-                return new RandomTestDataGenerator();
-
-            case "uat":
-                return new CsvTestDataGenerator();
-        }
-        throw new Exception("Niewspierane środowisko");
+        return new RandomTestDataGenerator();
+//        switch (System.getProperty("env")) {
+//            case "local":
+//
+//            case "uat":
+//                return new CsvTestDataGenerator();
+//        }
+//        throw new Exception("Niewspierane środowisko");
     }
 
     private SystemSetup getSystemSetup() throws Exception {
-        switch (System.getProperty("env")) {
-            case "local":
-                return new LocalSystemSetup();
-
-            case "uat":
-                return new UatSystemSetup();
-        }
-        throw new Exception("Niewspierane środowisko");
+        return new LocalSystemSetup();
+//        switch (System.getProperty("env")) {
+//            case "local":
+//            return new LocalSystemSetup();
+//
+//            case "uat":
+//                return new UatSystemSetup();
+//        }
+//        throw new Exception("Niewspierane środowisko");
     }
 
 
@@ -71,7 +74,6 @@ public class AccountWithCard implements Fact {
                 break;
 
             case CREDIT:
-
                 useCard =  data.createCreditCard();
                 break;
 

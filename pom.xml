@@ -37,6 +37,14 @@
       <version>${serenity.cucumber.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-screenplay-rest -->
+    <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-screenplay-rest</artifactId>
+      <version>${serenity.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
     <dependency>
       <groupId>com.github.javafaker</groupId>

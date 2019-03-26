@@ -1,6 +1,7 @@
 package com.github.qbek.screenplay.abilities;
 
 import com.github.javafaker.Faker;
+import com.github.qbek.screenplay.facts.CardType;
 
 public class RandomTestDataGenerator implements TestDataGenerator {
 
@@ -11,6 +12,7 @@ public class RandomTestDataGenerator implements TestDataGenerator {
         Card card = new Card(
                 faker.numerify("110022##########"),
                 faker.business().creditCardExpiry(),
+                CardType.DEBIT,
                 faker.number().numberBetween(10, 100)
         );
         UseCards useCards = new UseCards(card);
@@ -23,6 +25,7 @@ public class RandomTestDataGenerator implements TestDataGenerator {
         Card card = new Card(
                 faker.numerify("330022##########"),
                 faker.business().creditCardExpiry(),
+                CardType.CREDIT,
                 faker.number().numberBetween(10, 100)
         );
         UseCards useCards = new UseCards(card);
