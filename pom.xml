@@ -18,7 +18,30 @@
     <serenity.cucumber.version>1.9.22</serenity.cucumber.version>
     <javafaker.version>0.16</javafaker.version>
     <mock-server.version>5.5.1</mock-server.version>
+
+
   </properties>
+
+  <profiles>
+    <profile>
+      <id>devEnv</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <login>envLogin</login>
+        <pass>envPassword</pass>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>uatEnv</id>
+      <properties>
+        <login>uatLogin</login>
+        <pass>uatPassword</pass>
+      </properties>
+    </profile>
+  </profiles>
 
   <dependencies>
 
@@ -62,6 +85,17 @@
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M3</version>
+          <configuration>
+            <systemProperties>
+              <login>${login}</login>
+              <pass>${pass}</pass>
+            </systemProperties>
+          </configuration>
+        </plugin>
         <plugin>
           <groupId>net.serenity-bdd.maven.plugins</groupId>
           <artifactId>serenity-maven-plugin</artifactId>
