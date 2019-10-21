@@ -39,7 +39,7 @@ public class CardAbilitiesFactory {
                         .withPath("/card/" + cardToInject.getPan())
                 ).respond(
                         HttpResponse.response()
-                .withBody(String.valueOf(cardToInject.getBalance())
+                        .withBody(String.valueOf(cardToInject.getBalance())
                 ));
     }
 
