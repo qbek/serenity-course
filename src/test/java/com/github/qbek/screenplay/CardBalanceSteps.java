@@ -1,17 +1,19 @@
 package com.github.qbek.screenplay;
 
-import com.github.javafaker.Faker;
-import com.github.qbek.screenplay.data.UseAccount;
-import com.github.qbek.screenplay.data.UseCards;
-import com.github.qbek.screenplay.data.entitis.Card;
+import com.github.qbek.screenplay.data.card.Card;
+import com.github.qbek.screenplay.data.card.UseCards;
+import com.github.qbek.screenplay.transforms.UserInStep;
+import cucumber.api.Transform;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
-import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
+import static com.github.qbek.screenplay.data.account.AccountAbilityFactory.useActiveAccount;
+import static com.github.qbek.screenplay.data.card.CardAbilitiesFactory.useCard;
 
 public class CardBalanceSteps {
 
@@ -21,27 +23,15 @@ public class CardBalanceSteps {
     }
 
     @Given("^(\\w+) is a card user with active account$")
-    public void carlIsACardUserWithActiveAccount(String actorName) throws Throwable {
-        Actor user = theActorCalled(actorName);
-        Faker faker = new Faker();
-        Card testCard = new Card(
-                faker.numerify("9876 98## #### ####"),
-                faker.zelda().character(),
-                faker.business().creditCardExpiry(),
-                faker.number().randomDouble(2, 100, 1000)
-        );
-        UseCards useCard = new UseCards(testCard);
-        String login = System.getProperty("login");
-        String password = System.getProperty("pass");
-
-        UseAccount useAccount = new UseAccount(login, password, true);
-        user.can(useCard);
-        user.can(useAccount);
+    public void carlIsACardUserWithActiveAccount(
+            @Transform(UserInStep.class) Actor user
+    ) throws Throwable {
+        user.can(useCard());
+        user.can(useActiveAccount());
     }
 
     @When("^(\\w+) checks his card balance$")
-    public void carlChecksHisCardBalance(String actorName) {
-        Actor user = theActorCalled(actorName);
+    public void carlChecksHisCardBalance(@Transform(UserInStep.class) Actor user) {
         Card userCard = user.usingAbilityTo(UseCards.class).getCard();
         System.out.println(
                 String.format("Holder: %s, pan: %s, card expDate: %s, balance: %f",
@@ -61,5 +51,16 @@ public class CardBalanceSteps {
 
         }
 
+    }
+
+    @Given("^Adam has (\\d+) apples$")
+    public void adamHasApples(String value) {
+
+        Integer.getInteger(value);
+
+    }
+
+    @And("^he is (true) or false$")
+    public void heIsTrueOrFalse(boolean value) {
     }
 }

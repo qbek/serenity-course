@@ -1,13 +1,12 @@
-package com.github.qbek.screenplay.data;
+package com.github.qbek.screenplay.data.card;
 
-import com.github.qbek.screenplay.data.entitis.Card;
 import net.serenitybdd.screenplay.Ability;
 
 public class UseCards implements Ability {
 
     private Card card;
 
-    public UseCards (Card card) {
+    protected UseCards (Card card) {
         this.card = card;
     }
 

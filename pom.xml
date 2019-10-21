@@ -17,7 +17,7 @@
     <serenity.version>2.0.30</serenity.version>
     <serenity.cucumber.version>1.9.22</serenity.cucumber.version>
     <javafaker.version>0.16</javafaker.version>
-    <mock-server.version>5.5.1</mock-server.version>
+    <mock-server.version>5.3.0</mock-server.version>
 
 
   </properties>

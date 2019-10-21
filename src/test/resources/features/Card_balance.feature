@@ -5,3 +5,8 @@ Feature: Card balance
     And he is logged in his account
     When Carl checks his card balance
     Then correct balance is presented
+
+
+  Scenario:
+    Given Carl has a valid card
+    And Carl has a invalid card

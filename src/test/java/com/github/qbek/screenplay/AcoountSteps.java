@@ -1,6 +1,6 @@
 package com.github.qbek.screenplay;
 
-import com.github.qbek.screenplay.data.UseAccount;
+import com.github.qbek.screenplay.data.account.UseAccount;
 import cucumber.api.java.en.And;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
@@ -21,5 +21,4 @@ public class AcoountSteps {
                         account.getLogin(), account.getPassword())
         );
     }
-
 }

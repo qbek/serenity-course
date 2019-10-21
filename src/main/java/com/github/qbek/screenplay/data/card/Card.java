@@ -1,4 +1,4 @@
-package com.github.qbek.screenplay.data.entitis;
+package com.github.qbek.screenplay.data.card;
 
 public class Card {
     private String pan;
@@ -6,7 +6,7 @@ public class Card {
     private String expDate;
     private double balance;
 
-    public Card(String pan, String cardHolder, String expDate, double balance) {
+    protected Card(String pan, String cardHolder, String expDate, double balance) {
         this.pan = pan;
         this.cardHolder = cardHolder;
         this.expDate = expDate;
