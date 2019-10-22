@@ -15,6 +15,6 @@ public class UseCards implements Ability {
     }
 
     public String toString() {
-        return String.format("use following card: %s", card.getPan());
+        return "use card";
     }
 }

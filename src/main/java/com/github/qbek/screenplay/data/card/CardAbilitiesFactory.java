@@ -2,9 +2,6 @@ package com.github.qbek.screenplay.data.card;
 
 import com.github.javafaker.Faker;
 import net.serenitybdd.screenplay.Ability;
-import org.mockserver.client.server.MockServerClient;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
 
 public class CardAbilitiesFactory {
     public static Ability useCard() {
@@ -15,7 +12,6 @@ public class CardAbilitiesFactory {
                 faker.business().creditCardExpiry(),
                 faker.number().randomDouble(2, 100, 1000)
         );
-        injectCardToSystem(testCard);
         return new UseCards(testCard);
     };
 
@@ -27,20 +23,6 @@ public class CardAbilitiesFactory {
                 "01/18",
                 faker.number().randomDouble(2, 100, 1000)
         );
-        injectCardToSystem(expiredCard);
         return new UseCards(expiredCard);
     }
-
-    private static void injectCardToSystem(Card cardToInject) {
-        new MockServerClient("localhost", 8080)
-                .when(
-                        HttpRequest.request()
-                        .withMethod("GET")
-                        .withPath("/card/" + cardToInject.getPan())
-                ).respond(
-                        HttpResponse.response()
-                        .withBody(String.valueOf(cardToInject.getBalance())
-                ));
-    }
-
 }

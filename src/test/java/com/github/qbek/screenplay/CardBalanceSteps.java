@@ -12,8 +12,7 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 
-import static com.github.qbek.screenplay.data.account.AccountAbilityFactory.useActiveAccount;
-import static com.github.qbek.screenplay.data.card.CardAbilitiesFactory.useCard;
+import static com.github.qbek.screenplay.data.FactsFactory.cardWithActiveAccout;
 
 public class CardBalanceSteps {
 
@@ -26,8 +25,7 @@ public class CardBalanceSteps {
     public void carlIsACardUserWithActiveAccount(
             @Transform(UserInStep.class) Actor user
     ) throws Throwable {
-        user.can(useCard());
-        user.can(useActiveAccount());
+        user.has(cardWithActiveAccout());
     }
 
     @When("^(\\w+) checks his card balance$")

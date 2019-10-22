@@ -20,6 +20,6 @@ public class UseAccount implements Ability {
     public boolean isActive() { return isActive; }
 
     public String toString() {
-       return String.format("use following account: %s/%s", login, password);
+       return "use his account";
     }
 }
