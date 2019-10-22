@@ -1,24 +1,25 @@
 package com.github.qbek.screenplay.steps;
 
 import com.github.qbek.screenplay.data.account.UseAccount;
-import cucumber.api.java.en.And;
+import com.github.qbek.screenplay.transforms.UserInStep;
+import cucumber.api.Transform;
+import cucumber.api.java.en.Given;
 import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.rest.interactions.Get;
 
 public class AccountSteps {
 
-    @And("^(\\w+) is logged in his account$")
-    public void heIsLoggedInHisAccount(String actorName) {
-//        Actor user = OnStage.theActorCalled(actorName);
-        Actor user = OnStage.theActorInTheSpotlight();
-
-        System.out.println(
-                String.format("This is our actor %s ", user.getName())
-        );
+    @Given("^(\\w+) is logged in his account$")
+    public void heIsLoggedInHisAccount(
+            @Transform(UserInStep.class) Actor user
+    ) {
         UseAccount account = user.usingAbilityTo(UseAccount.class);
-        System.out.println(
-                String.format("UseAccount login: %s, password: %s",
-                        account.getLogin(), account.getPassword())
+        String requestBody = String.format("{\"login\":\"%s\", \"pass\":\"%s\"}",
+                account.getLogin(),
+                account.getPassword()
+        );
+        user.wasAbleTo(
+                Get.resource("/login").with(req -> req.body(requestBody))
         );
     }
 }

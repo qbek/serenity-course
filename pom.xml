@@ -32,6 +32,7 @@
       <properties>
         <login>envLogin</login>
         <pass>envPassword</pass>
+        <sutAddress>http://localhost:8080</sutAddress>
       </properties>
     </profile>
 
@@ -40,6 +41,7 @@
       <properties>
         <login>uatLogin</login>
         <pass>uatPassword</pass>
+        <sutAddress>http://10.234.231.19:1234</sutAddress>
       </properties>
     </profile>
 
@@ -59,6 +61,13 @@
     <dependency>
       <groupId>net.serenity-bdd</groupId>
       <artifactId>serenity-screenplay</artifactId>
+      <version>${serenity.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-screenplay-rest -->
+    <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-screenplay-rest</artifactId>
       <version>${serenity.version}</version>
     </dependency>
 
@@ -113,6 +122,7 @@
             <systemProperties>
               <login>${login}</login>
               <pass>${pass}</pass>
+              <sutAddress>${sutAddress}</sutAddress>
             </systemProperties>
           </configuration>
           <executions>
