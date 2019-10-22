@@ -1,11 +1,11 @@
-package com.github.qbek.screenplay;
+package com.github.qbek.screenplay.steps;
 
 import com.github.qbek.screenplay.data.account.UseAccount;
 import cucumber.api.java.en.And;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 
-public class AcoountSteps {
+public class AccountSteps {
 
     @And("^(\\w+) is logged in his account$")
     public void heIsLoggedInHisAccount(String actorName) {

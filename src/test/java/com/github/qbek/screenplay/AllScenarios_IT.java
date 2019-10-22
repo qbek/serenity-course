@@ -7,6 +7,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(features="src/test/resources/features/")
-public class AppTest 
+public class AllScenarios_IT
 {
 }
