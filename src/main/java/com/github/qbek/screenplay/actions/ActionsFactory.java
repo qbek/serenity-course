@@ -14,4 +14,9 @@ public class ActionsFactory {
         boolean useAuthToken = true;
         return instanceOf(UserLogsIntoAccount.class).withProperties(useAuthToken);
     }
+
+    public static Task checkCardBalance() {
+        return instanceOf(UserChecksCardBalance.class).newInstance();
+    }
+
 }

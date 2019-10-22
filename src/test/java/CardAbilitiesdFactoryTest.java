@@ -10,7 +10,7 @@ public class CardAbilitiesdFactoryTest {
 
     @Test
     public void validCardCreationTest() {
-        UseCards useCard = (UseCards) CardAbilitiesFactory.useCard();
+        UseCards useCard = (UseCards) CardAbilitiesFactory.useDebitCard();
         Card card =  useCard.getCard();
         assertTrue(nonNull(card.getPan()));
     }

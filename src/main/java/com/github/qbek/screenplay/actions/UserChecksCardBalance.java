@@ -10,11 +10,15 @@ import net.thucydides.core.annotations.Step;
 public class UserChecksCardBalance implements Task {
 
     @Override
-    @Step("{0} checks card balance: #tajneCos")
+    @Step("{0} checks card balance")
     public <T extends Actor> void performAs(T user) {
         Card userCard = user.usingAbilityTo(UseCards.class).getCard();
-        String path = String.format("/card/%s", userCard.getPan());
+        String path = getPath(userCard);
         user.attemptsTo(Get.resource(path));
+    }
+
+    private String getPath(Card card) {
+        return String.format("/card/%s/%s", card.getType(), card.getPan());
     }
 
 }

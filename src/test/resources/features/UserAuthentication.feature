@@ -8,5 +8,5 @@ Feature: User authentication
 
   Scenario: AuthToken user authentication
     Given Mark has active account with authToken authentication
-    When he sends authToken
+    When he sends his credentials
     Then he is logged in

@@ -6,7 +6,3 @@ Feature: Card balance
     When Carl checks his card balance
     Then correct balance is presented
 
-
-  Scenario:
-    Given Carl has a valid card
-    And Carl has a invalid card

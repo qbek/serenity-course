@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.qbek.screenplay.data.account.UseAccount;
 import com.github.qbek.screenplay.data.card.Card;
 import com.github.qbek.screenplay.data.card.UseCards;
-import net.serenitybdd.screenplay.Ability;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.facts.Fact;
 import org.mockserver.client.server.MockServerClient;
@@ -20,6 +19,7 @@ import static org.mockserver.model.HttpResponse.response;
 public class CardAndAccount implements Fact {
 
     private final boolean useAuthToken;
+
     private UseCards useCard;
     private UseAccount useAccount;
 
@@ -31,10 +31,10 @@ public class CardAndAccount implements Fact {
         this.useAccount = account;
     }
 
-    public CardAndAccount (Ability useCards, Ability useAccount) {
+    public CardAndAccount (UseCards useCards, UseAccount useAccount) {
         this.useAuthToken = false;
-        this.useCard = (UseCards) useCards;
-        this.useAccount = (UseAccount) useAccount;
+        this.useCard = useCards;
+        this.useAccount = useAccount;
     }
 
     public CardAndAccount(UseAccount account, boolean useAuthToken) {
@@ -58,12 +58,6 @@ public class CardAndAccount implements Fact {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-
-//        useCard = (UseCards) useCard();
-//        useAccount = (UseAccount) useActiveAccount();
-//        user.can(useCard);
-//        user.can(useAccount);
     }
 
     public String toString() {
@@ -87,15 +81,21 @@ public class CardAndAccount implements Fact {
 
         ObjectMapper mapper = new ObjectMapper();
         String reqBody = mapper.writeValueAsString(cardToInject);
+
+        String path = getPath(cardToInject);
         mcClient.when(
                     HttpRequest.request()
                             .withMethod("GET")
-                            .withPath("/card/" + cardToInject.getPan())
+                            .withPath(path)
                 ).respond(
                 HttpResponse.response()
                         .withHeader("Content-Type", "application/json")
                         .withBody(reqBody)
                         );
+    }
+
+    private String getPath(Card cardToInject) {
+        return String.format("/card/%s/%s", cardToInject.getType(), cardToInject.getPan());
     }
 
     private void injectUserIntoSystem(UseAccount account) throws JsonProcessingException {
