@@ -19,25 +19,31 @@ import static org.mockserver.model.HttpResponse.response;
 
 public class CardAndAccount implements Fact {
 
+    private final boolean useAuthToken;
     private UseCards useCard;
     private UseAccount useAccount;
 
     private MockServerClient mcClient = new MockServerClient("localhost", 8080);
 
-    private Actor user;
 
     public CardAndAccount(UseAccount account) {
+        this.useAuthToken = false;
         this.useAccount = account;
     }
 
     public CardAndAccount (Ability useCards, Ability useAccount) {
+        this.useAuthToken = false;
         this.useCard = (UseCards) useCards;
         this.useAccount = (UseAccount) useAccount;
     }
 
+    public CardAndAccount(UseAccount account, boolean useAuthToken) {
+        this.useAccount = account;
+        this.useAuthToken = useAuthToken;
+    }
+
     @Override
     public void setup(Actor user) {
-        this.user = user;
 
         try {
             if (nonNull(useAccount)) {
@@ -94,16 +100,12 @@ public class CardAndAccount implements Fact {
 
     private void injectUserIntoSystem(UseAccount account) throws JsonProcessingException {
         int statusCode;
-
         if(account.isActive()) {
             statusCode = 200;
         } else {
             statusCode = 401;
         }
-
-        ObjectMapper mapper = new ObjectMapper();
-        String reqBody = mapper.writeValueAsString(account);
-
+        String reqBody = getRequestBody(account);
         mcClient.when(request()
                     .withMethod("GET")
                     .withPath("/login")
@@ -111,5 +113,14 @@ public class CardAndAccount implements Fact {
                     Times.exactly(1)
                 )
                 .respond(response().withStatusCode(statusCode));
+    }
+
+    private String getRequestBody(UseAccount account) throws JsonProcessingException {
+        if(useAuthToken) {
+            return account.getPassword();
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(account);
+        }
     }
 }

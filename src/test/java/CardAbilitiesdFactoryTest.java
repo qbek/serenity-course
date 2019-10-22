@@ -15,5 +15,4 @@ public class CardAbilitiesdFactoryTest {
         assertTrue(nonNull(card.getPan()));
     }
 
-
 }

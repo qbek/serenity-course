@@ -26,4 +26,9 @@ public class FactsFactory {
     public static Fact activeAccount() {
         return new CardAndAccount((UseAccount) useActiveAccount());
     }
+
+    public static Fact activeAccountWithAuthTokenAuthorization() {
+        boolean useAuthToken = true;
+        return new CardAndAccount((UseAccount) useActiveAccount(), useAuthToken);
+    }
 }

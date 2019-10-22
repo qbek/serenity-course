@@ -7,6 +7,6 @@ Feature: User authentication
 
 
   Scenario: AuthToken user authentication
-    Given Mark is a active account with authToken authentication
+    Given Mark has active account with authToken authentication
     When he sends authToken
     Then he is logged in
