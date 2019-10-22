@@ -9,6 +9,7 @@ import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 
+import static com.github.qbek.screenplay.data.FactsFactory.activeAccount;
 import static com.github.qbek.screenplay.data.FactsFactory.cardWithActiveAccout;
 
 public class PreconditionSteps {
@@ -26,4 +27,10 @@ public class PreconditionSteps {
         user.can(CallAnApi.at(System.getProperty("sutAddress")));
     }
 
+    @Given("^(\\w+) has an active account$")
+    public void helmutHasAnActiveAccount(
+            @Transform(UserInStep.class)Actor user
+            ) {
+        user.has(activeAccount());
+    }
 }
