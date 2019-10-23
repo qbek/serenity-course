@@ -9,7 +9,8 @@ import cucumber.api.java.en.Given;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 
-import static com.github.qbek.screenplay.data.FactsFactory.*;
+import static com.github.qbek.screenplay.data.FactsFactory.activeAccount;
+import static com.github.qbek.screenplay.data.FactsFactory.cardWithActiveAccount;
 
 public class PreconditionSteps {
 
@@ -17,6 +18,8 @@ public class PreconditionSteps {
     public void setup() {
         OnStage.setTheStage(new TrainingCast());
     }
+
+
 
     @Given("^(\\w+) is a card user with active account$")
     public void carlIsACardUserWithActiveAccount(

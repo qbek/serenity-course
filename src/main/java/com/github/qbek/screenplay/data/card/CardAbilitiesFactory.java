@@ -8,26 +8,24 @@ import static com.github.qbek.screenplay.data.card.CardType.DEBIT;
 
 public class CardAbilitiesFactory {
     public static Ability useDebitCard() {
-        Faker faker = new Faker();
-        Card testCard = new Card(
-                faker.numerify("987698##########"),
-                faker.zelda().character(),
-                faker.business().creditCardExpiry(),
-                faker.number().randomDouble(2, 100, 1000),
-                DEBIT
-        );
-        return new UseCards(testCard);
+        CardBuilder builder = getBasicCard();
+        builder.setType(DEBIT);
+        return new UseCards(builder.build());
     };
 
     public static Ability useCreditCard() {
+        CardBuilder builder = getBasicCard();
+        builder.setType(CREDIT);
+        return new UseCards(builder.build());
+    }
+
+    private static CardBuilder getBasicCard() {
         Faker faker = new Faker();
-        Card expiredCard = new Card(
-                faker.numerify("987698##########"),
-                faker.zelda().character(),
-                "01/18",
-                faker.number().randomDouble(2, 100, 1000),
-                CREDIT
-        );
-        return new UseCards(expiredCard);
+        CardBuilder builder = new CardBuilder();
+        builder.setPan(faker.numerify("987698##########"))
+                .setBalance(faker.number().randomDouble(2, 100, 1000))
+                .setCardHolder(faker.zelda().character())
+                .setExpDate(faker.business().creditCardExpiry());
+        return builder;
     }
 }

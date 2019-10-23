@@ -1,6 +1,7 @@
 package com.github.qbek.screenplay.data.card;
 
 public class Card {
+
     private String pan;
     private String cardHolder;
     private String expDate;
