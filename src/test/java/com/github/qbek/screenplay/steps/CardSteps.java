@@ -1,5 +1,6 @@
 package com.github.qbek.screenplay.steps;
 
+import com.github.qbek.screenplay.assertions.Assertions;
 import com.github.qbek.screenplay.data.card.Card;
 import com.github.qbek.screenplay.transforms.UserInStep;
 import cucumber.api.Transform;
@@ -9,9 +10,7 @@ import net.serenitybdd.screenplay.Actor;
 
 import static com.github.qbek.screenplay.actions.ActionsFactory.checkCardBalance;
 import static com.github.qbek.screenplay.questions.Questions.card;
-import static com.github.qbek.screenplay.questions.Questions.cardBalance;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
-import static org.junit.Assert.assertEquals;
 
 public class CardSteps {
     @When("^(\\w+) checks his card balance$")
@@ -24,8 +23,7 @@ public class CardSteps {
     @Then("^correct balance is presented$")
     public void correctBalanceIsPresented() {
         Actor user = theActorInTheSpotlight();
-        double cardBalance = user.asksFor(cardBalance());
         Card testCard = user.asksFor(card());
-        assertEquals(testCard.getBalance(), cardBalance, 0);
+        user.should(Assertions.receiveCorrectCardDetails(testCard));
     }
 }
