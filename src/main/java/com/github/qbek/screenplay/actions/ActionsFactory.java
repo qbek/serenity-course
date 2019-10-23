@@ -19,4 +19,5 @@ public class ActionsFactory {
         return instanceOf(UserChecksCardBalance.class).newInstance();
     }
 
+
 }

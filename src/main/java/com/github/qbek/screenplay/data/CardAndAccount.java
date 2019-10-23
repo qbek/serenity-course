@@ -18,8 +18,6 @@ import static org.mockserver.model.HttpResponse.response;
 
 public class CardAndAccount implements Fact {
 
-    private final boolean useAuthToken;
-
     private UseCards useCard;
     private UseAccount useAccount;
 
@@ -27,19 +25,12 @@ public class CardAndAccount implements Fact {
 
 
     public CardAndAccount(UseAccount account) {
-        this.useAuthToken = false;
         this.useAccount = account;
     }
 
     public CardAndAccount (UseCards useCards, UseAccount useAccount) {
-        this.useAuthToken = false;
         this.useCard = useCards;
         this.useAccount = useAccount;
-    }
-
-    public CardAndAccount(UseAccount account, boolean useAuthToken) {
-        this.useAccount = account;
-        this.useAuthToken = useAuthToken;
     }
 
     @Override
@@ -116,11 +107,14 @@ public class CardAndAccount implements Fact {
     }
 
     private String getRequestBody(UseAccount account) throws JsonProcessingException {
-        if(useAuthToken) {
-            return account.getPassword();
-        } else {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(account);
+        ObjectMapper mapper = new ObjectMapper();
+        switch (account.getAuthType()) {
+            case BASIC:
+                return mapper.writeValueAsString(account);
+            case TOKEN:
+                return account.getPassword();
+            default:
+                throw new RuntimeException("Not defined accunt auth type");
         }
     }
 }

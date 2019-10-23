@@ -7,11 +7,13 @@ public class UseAccount implements Ability {
     private String login;
     private String password;
     private boolean isActive;
+    private AuthType type;
 
-    protected UseAccount(String login, String password, boolean isActive) {
+    protected UseAccount(String login, String password, AuthType type, boolean isActive) {
         this.login = login;
         this.password = password;
         this.isActive = isActive;
+        this.type = type;
     }
 
     public String getLogin() { return login; };
@@ -21,5 +23,9 @@ public class UseAccount implements Ability {
 
     public String toString() {
        return "use his account";
+    }
+
+    public AuthType getAuthType() {
+        return type;
     }
 }

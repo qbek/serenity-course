@@ -10,16 +10,6 @@ import net.serenitybdd.screenplay.rest.interactions.Get;
 
 public class UserLogsIntoAccount implements Task {
 
-    private final boolean useAuthToken;
-
-    public UserLogsIntoAccount(boolean useAuthToken) {
-        this.useAuthToken = useAuthToken;
-    }
-
-    public UserLogsIntoAccount() {
-        useAuthToken = false;
-    }
-
     @Override
     public <T extends Actor> void performAs(T user) {
         UseAccount account = user.usingAbilityTo(UseAccount.class);
@@ -28,17 +18,22 @@ public class UserLogsIntoAccount implements Task {
             user.wasAbleTo(
                     Get.resource("/login").with(req -> req.body(reqBody))
             );
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     private String getRequestBody(UseAccount account) throws JsonProcessingException {
-        if(useAuthToken) {
-            return account.getPassword();
-        } else {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(account);
+        ObjectMapper mapper = new ObjectMapper();
+        switch (account.getAuthType()) {
+            case BASIC:
+                return mapper.writeValueAsString(account);
+            case TOKEN:
+                return account.getPassword();
+            default:
+                throw new RuntimeException("Not supported account auth type");
         }
     }
 }
