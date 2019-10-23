@@ -71,6 +71,12 @@
       <version>${serenity.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-junit -->
+    <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-junit</artifactId>
+      <version>${serenity.version}</version>
+    </dependency>
 
     <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-cucumber -->
     <dependency>
@@ -93,11 +99,11 @@
       <version>${mock-server.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>junit</groupId>-->
+      <!--<artifactId>junit</artifactId>-->
+      <!--<version>4.11</version>-->
+    <!--</dependency>-->
   </dependencies>
 
   <build>
@@ -109,6 +115,11 @@
           <version>3.0.0-M3</version>
           <configuration><!--<testFailureIgnore>true</testFailureIgnore>-->
             <skipTests>${tests}</skipTests>
+            <systemProperties>
+              <login>${login}</login>
+              <pass>${pass}</pass>
+              <sutAddress>${sutAddress}</sutAddress>
+            </systemProperties>
           </configuration>
         </plugin>
         <!--to execute integration tests on 'verify' mvn goal-->
