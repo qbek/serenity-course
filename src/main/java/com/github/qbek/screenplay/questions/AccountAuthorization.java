@@ -9,6 +9,8 @@ import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.rest.interactions.Get;
 import net.serenitybdd.screenplay.rest.questions.LastResponse;
 
+import static com.github.qbek.screenplay.data.auxiliary.NoteTypes.TOKEN;
+
 public class AccountAuthorization implements Question<Boolean> {
 
     private static int SUCCESS_RESPONSE = 200;
@@ -22,6 +24,8 @@ public class AccountAuthorization implements Question<Boolean> {
                     Get.resource("/login").with(req -> req.body(reqBody))
             );
             Response response = user.asksFor(LastResponse.received());
+            String token = response.getBody().asString();
+            user.remember(TOKEN.toString(), token);
             return response.getStatusCode() == SUCCESS_RESPONSE;
         } catch (Exception e) {
             throw new RuntimeException(e);

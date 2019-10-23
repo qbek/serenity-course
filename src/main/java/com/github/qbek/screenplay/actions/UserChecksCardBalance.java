@@ -6,6 +6,7 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.rest.interactions.Get;
 import net.thucydides.core.annotations.Step;
 
+import static com.github.qbek.screenplay.data.auxiliary.NoteTypes.TOKEN;
 import static com.github.qbek.screenplay.questions.Questions.card;
 
 public class UserChecksCardBalance implements Task {
@@ -15,7 +16,8 @@ public class UserChecksCardBalance implements Task {
     public <T extends Actor> void performAs(T user) {
         Card userCard = user.asksFor(card());
         String path = getPath(userCard);
-        user.attemptsTo(Get.resource(path));
+        user.attemptsTo(Get.resource(path)
+                .with(req -> req.header("token", user.recall(TOKEN.toString()))));
     }
 
     private String getPath(Card card) {

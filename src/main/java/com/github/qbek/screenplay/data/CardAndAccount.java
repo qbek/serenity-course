@@ -2,6 +2,7 @@ package com.github.qbek.screenplay.data;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 import com.github.qbek.screenplay.data.account.UseAccount;
 import com.github.qbek.screenplay.data.card.Card;
 import com.github.qbek.screenplay.data.card.UseCards;
@@ -103,7 +104,10 @@ public class CardAndAccount implements Fact {
                     .withBody(reqBody),
                     Times.exactly(1)
                 )
-                .respond(response().withStatusCode(statusCode));
+                .respond(response()
+                        .withBody((new Faker()).artist().name())
+                        .withHeader("Content-Type", "text/plain")
+                        .withStatusCode(statusCode));
     }
 
     private String getRequestBody(UseAccount account) throws JsonProcessingException {

@@ -4,8 +4,7 @@ import com.github.qbek.screenplay.data.card.Card;
 import net.serenitybdd.screenplay.Consequence;
 import net.serenitybdd.screenplay.QuestionConsequence;
 
-import static com.github.qbek.screenplay.questions.Questions.cardBalance;
-import static com.github.qbek.screenplay.questions.Questions.cardHolder;
+import static com.github.qbek.screenplay.questions.Questions.*;
 import static org.hamcrest.Matchers.equalTo;
 
 public class Assertions {
@@ -21,6 +20,15 @@ public class Assertions {
                         cardBalance(),
                         equalTo(expected.getBalance())
                 )
+        };
+    }
+
+    public static Consequence[] beLoggedIn() {
+        return new Consequence[] {
+                new QuestionConsequence(
+                    "authorization response is",
+                    getAuthorizationResponse(),
+                    equalTo(200))
         };
     }
 }

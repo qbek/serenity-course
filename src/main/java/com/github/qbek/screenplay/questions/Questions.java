@@ -19,10 +19,17 @@ public class Questions {
         return new CardBalanceQuestion();
     }
 
-    public static Question cardHolder() {
-        return (Question<String>) user -> {
+    public static Question<String> cardHolder() {
+        return user -> {
             Response response = user.asksFor(LastResponse.received());
             return response.path("cardHolder").toString();
+        };
+    }
+
+    public static Question getAuthorizationResponse() {
+        return user -> {
+            Response response = user.asksFor(LastResponse.received());
+            return response.getStatusCode();
         };
     }
 }
