@@ -16,6 +16,7 @@ public class UserChecksCardBalance implements Task {
     public <T extends Actor> void performAs(T user) {
         Card userCard = user.asksFor(card());
         String path = getPath(userCard);
+
         user.attemptsTo(Get.resource(path)
                 .with(req -> req.header("token", user.recall(TOKEN.toString()))));
     }

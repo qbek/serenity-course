@@ -21,7 +21,7 @@ public class AccountAuthorization implements Question<Boolean> {
         try {
             String reqBody = getRequestBody(account);
             user.wasAbleTo(
-                    Get.resource("/login").with(req -> req.body(reqBody))
+                    Get.resource("/login/sss").with(req -> req.body(reqBody))
             );
             Response response = user.asksFor(LastResponse.received());
             String token = response.getBody().asString();

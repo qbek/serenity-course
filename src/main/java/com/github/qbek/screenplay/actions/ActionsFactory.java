@@ -8,11 +8,11 @@ public class ActionsFactory {
 
     public static Task loginIntoAccount() {
         return instanceOf(UserLogsIntoAccount.class).newInstance();
-    }
 
+    }
     public static Task loginIntoAccountUsingAuthToken() {
         boolean useAuthToken = true;
-        return instanceOf(UserLogsIntoAccount.class).withProperties(useAuthToken);
+        return instanceOf(UserLogsIntoAccountSuccessfully.class).withProperties(useAuthToken);
     }
 
     public static Task checkCardBalance() {
@@ -20,4 +20,7 @@ public class ActionsFactory {
     }
 
 
+    public static Task successfullyLogsIn() {
+        return instanceOf(UserLogsIntoAccountSuccessfully.class).newInstance();
+    }
 }

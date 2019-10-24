@@ -20,7 +20,6 @@ public class PreconditionSteps {
     }
 
 
-
     @Given("^(\\w+) is a card user with active account$")
     public void carlIsACardUserWithActiveAccount(
             @Transform(UserInStep.class) Actor user

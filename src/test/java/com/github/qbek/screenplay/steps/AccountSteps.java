@@ -8,8 +8,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import net.serenitybdd.screenplay.Actor;
 
-import static com.github.qbek.screenplay.actions.ActionsFactory.loginIntoAccount;
-import static com.github.qbek.screenplay.actions.ActionsFactory.loginIntoAccountUsingAuthToken;
+import static com.github.qbek.screenplay.actions.ActionsFactory.*;
 
 public class AccountSteps {
 
@@ -17,14 +16,14 @@ public class AccountSteps {
     public void heIsLoggedInHisAccount(
             @Transform(UserInStep.class) Actor user
     ) {
-        user.wasAbleTo(loginIntoAccount());
+        user.wasAbleTo(successfullyLogsIn());
     }
 
     @When("^(\\w+) sends his credentials$")
     public void heSendsHisCredentials(
             @Transform(UserInStep.class) Actor user
     ) {
-        user.wasAbleTo(loginIntoAccount());
+        user.attemptsTo(loginIntoAccount());
     }
 
     @When("^(\\w+) sends authToken$")

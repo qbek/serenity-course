@@ -100,7 +100,7 @@ public class CardAndAccount implements Fact {
         String reqBody = getRequestBody(account);
         mcClient.when(request()
                     .withMethod("GET")
-                    .withPath("/login")
+                    .withPath("/login/sss")
                     .withBody(reqBody),
                     Times.exactly(1)
                 )
